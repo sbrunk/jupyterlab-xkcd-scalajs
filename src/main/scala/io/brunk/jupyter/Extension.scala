@@ -1,8 +1,6 @@
 package io.brunk.jupyter
 
-import org.scalajs.dom.document
 import org.scalajs.dom.ext.Ajax
-import org.scalajs.dom.html.Image
 import typings.atJupyterlabApplicationLib.atJupyterlabApplicationMod.{JupyterLab, JupyterLabPlugin}
 import typings.atJupyterlabApplicationLib.libLayoutrestorerMod
 import typings.atJupyterlabApplicationLib.libLayoutrestorerMod.ILayoutRestorer
@@ -16,6 +14,8 @@ import typings.atPhosphorCoreutilsLib.atPhosphorCoreutilsMod.{JSONExtNs, Token}
 import typings.atPhosphorCoreutilsLib.libJsonMod.ReadonlyJSONObject
 import typings.atPhosphorMessagingLib.atPhosphorMessagingMod.Message
 import typings.atPhosphorWidgetsLib.atPhosphorWidgetsMod.Widget
+import typings.stdLib.^.document
+import typings.stdLib.{HTMLImageElement, stdLibStrings}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.scalajs.js
@@ -38,11 +38,11 @@ class XkcdWidget extends Widget {
   /**
     * The image element associated with the widget.
     */
-  val img = document.createElement("img").asInstanceOf[Image]
+  val img: HTMLImageElement = document.createElement_img(stdLibStrings.img)
   img.className = "jp-xkcdCartoon"
   node.appendChild(img)
 
-  img.insertAdjacentHTML("afterend",
+  img.insertAdjacentHTML(stdLibStrings.afterend,
     """<div class="jp-xkcdAttribution">
       <a href="https://creativecommons.org/licenses/by-nc/2.5/" class="jp-xkcdAttribution" target="_blank">
         <img src="https://licensebuttons.net/l/by-nc/2.5/80x15.png" />
@@ -69,9 +69,10 @@ object Extension extends JupyterLabPlugin[Unit] {
   private val style = Style // only to prevent the style import being optimized away
   var id: String = "jupyterlab_scalajs_xkcd"
   autoStart = true
-  requires = js.Array(
+  requires = js.Array[Token[_]](
     libCommandpaletteMod.^.ICommandPalette,
-    libLayoutrestorerMod.^.ILayoutRestorer).asInstanceOf[js.UndefOr[js.Array[Token[_]]]]
+    libLayoutrestorerMod.^.ILayoutRestorer
+  )
 
   /**
     * Activate the xckd widget extension.
@@ -85,11 +86,11 @@ object Extension extends JupyterLabPlugin[Unit] {
     // Create a single widget
     var widget: XkcdWidget = null
     // Track and restore the widget state
-    val tracker = new InstanceTracker[Widget](js.Dynamic.literal(namespace = "xkcd").asInstanceOf[IOptions])
+    val tracker = new InstanceTracker[Widget](IOptions(namespace = "xkcd"))
 
     // Add an application command
-    val command = "xkcd:open"
-    app.commands.addCommand(command, js.Dynamic.literal(
+    val Command = "xkcd:open"
+    app.commands.addCommand(Command, js.Dynamic.literal(
       label = "Random xkcd comic",
       execute = (args: ReadonlyJSONObject) => {
         if (widget == null) {
@@ -115,18 +116,17 @@ object Extension extends JupyterLabPlugin[Unit] {
     ).asInstanceOf[ICommandOptions])
 
     // Add the command to the palette.
-    palette.addItem(js.Dynamic.literal(
-      command = command,
-      category = "Tutorial"
-    ).asInstanceOf[IPaletteItem])
+    palette.addItem(new IPaletteItem {
+      override var category = "Tutorial"
+      override var command = Command
+    })
 
     // Track and restore the widget state
-    restorer.restore(tracker, js.Dynamic.literal(
-      command = command,
-      args = () => JSONExtNs.emptyObject,
-      name = () => "xkcd"
-    ).asInstanceOf[IRestoreOptions[_]])
-    ()
+    restorer.restore(tracker, IRestoreOptions[Unit](
+      args = _ => JSONExtNs.emptyObject,
+      command = Command,
+      name = _ => "xkcd"
+    ))
   }
 }
 

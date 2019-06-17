@@ -58,8 +58,8 @@ class XkcdWidget extends Widget {
       xhr => {
         val data = JSON.parse(xhr.responseText)
         img.src = data.img.toString
-        img.alt = data.alt.toString
-        img.title = data.title.toString
+        img.alt = data.title.toString
+        img.title = data.alt.toString
       }
     }
 }
@@ -116,13 +116,13 @@ object Extension extends JupyterLabPlugin[Unit] {
 
     // Add the command to the palette.
     palette.addItem(js.Dynamic.literal(
-      command,
+      command = command,
       category = "Tutorial"
     ).asInstanceOf[IPaletteItem])
 
     // Track and restore the widget state
     restorer.restore(tracker, js.Dynamic.literal(
-      command,
+      command = command,
       args = () => JSONExtNs.emptyObject,
       name = () => "xkcd"
     ).asInstanceOf[IRestoreOptions[_]])

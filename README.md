@@ -18,6 +18,8 @@ Uses JupyterLab typings from [ScalablyTyped](https://github.com/oyvindberg/Scala
 jupyter labextension install @sbrunk/jupyterlab-xkcd-scalajs
 ```
 
+Type xkcd in the JupyterLab command palette to open the comic tab.
+
 ## Development
 
 For a development install (requires npm version 4 or later), do the following in the repository directory:
@@ -38,7 +40,7 @@ For a fast dev cycle run sbt in watch mode in one terminal:
 sbt ~fastOptJS
 ```
 
-And jupyter lab also in watch mode in another terminal
+And jupyter lab also in watch mode in another terminal:
 ```
 jupyter lab --watch
 ```

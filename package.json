@@ -1,6 +1,6 @@
 {
   "name": "@sbrunk/jupyterlab-xkcd-scalajs",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Show a random xkcd.com comic in a JupyterLab panel. Ported to Scala.js.",
   "keywords": [
     "jupyter",
@@ -19,7 +19,7 @@
     "target/*.{d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}",
     "style/**/*.{css,eot,gif,html,jpg,json,png,svg,woff2,ttf}"
   ],
-  "main": "target/scala-2.12/scalajs-jupyterlab-fastopt.js",
+  "main": "target/scala-2.12/jupyterlab-xkcd-scalajs-fastopt.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/sbrunk/jupyterlab-xkcd-scalajs.git"
